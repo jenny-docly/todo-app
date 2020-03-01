@@ -1,4 +1,5 @@
 const express = require('express')
+const HttpStatus = require('http-status-codes');
 
 const { createItem } = require('./model/item.js')
 
@@ -15,12 +16,13 @@ app.post(baseUrl + '/item', async (req, res) => {
     if (title) {
         try {
             const id = await createItem(title, description)
-            res.status(201).json({id})
+            res.status(HttpStatus.CREATED).json({ id })
         } catch (error) {
-            res.status(500).json({errorMessage: `Something went wrong when creating item: ${title}`})
+            console.log(error)
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ errorMessage: `Something went wrong when creating item: ${title}` })
         }
     } else {
-        res.status(400).json({errorMessage: "Wrong usage, title is missing in body."})
+        res.status(HttpStatus.BAD_REQUEST).json({ errorMessage: "Wrong usage, title is missing in body." })
     }
 })
 
