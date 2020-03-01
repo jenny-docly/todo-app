@@ -1,7 +1,7 @@
 const express = require('express')
 const HttpStatus = require('http-status-codes');
 
-const { createItem } = require('./model/item.js')
+const { createItem, getItems } = require('./model/item.js')
 
 const app = express()
 app.use(express.json())
@@ -26,6 +26,14 @@ app.post(baseUrl + '/item', async (req, res) => {
     }
 })
 
-app.get('/', (req, res) => res.send('Nothing here yet.'))
+app.get(baseUrl + '/items', async (req, res) => {
+    try {
+        const items = await getItems()
+        res.status(HttpStatus.OK).json(items)
+    } catch (error) {
+        console.log(error)
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ errorMessage: 'Something went wrong when retrieving items' })
+    }
+})
 
 app.listen(port, () => console.log(`Server is ready. Listening on port ${port}!`))
