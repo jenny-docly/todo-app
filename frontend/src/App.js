@@ -13,11 +13,7 @@ const styles = {
 function App() {
   return (
     <div style={styles.centered}>
-      <TodoList items={[{
-        title: 'set up http client',
-        description: 'so that todo items can be fetched from server'
-      }]}
-      />
+      <TodoList/>
     </div>
   )
 }
