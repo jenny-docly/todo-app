@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Modal, TextField, Button } from '@material-ui/core';
+import { BASE_URL } from '../api/constants';
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -19,6 +20,29 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+const postItem = (payload) => {
+    console.log(payload)
+    fetch(BASE_URL + '/item', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload),
+    })
+    .then((response) => {
+        if (response.ok) {
+            return response.json()
+        }
+        return null
+    })
+    .then(data => {
+        console.log("data", data)
+    })
+    .catch(error => {
+        console.log("error", error)
+    })
+}
 
 function TodoItemModal(props) {
     const classes = useStyles()
@@ -33,20 +57,20 @@ function TodoItemModal(props) {
                     id='title-field'
                     label='Title'
                     variant='filled'
-                    onChange={(event, newValue) => console.log("new value", newValue)}
+                    onChange={(event) => updateItemDetails({...itemDetails, title: event.target.value})}
                 />
                 <TextField
                     className={classes.item}
                     id='description-field'
                     label='Description'
                     variant='filled'
-                    onChange={(event, newValue) => console.log("new value", newValue)}
+                    onChange={(event) => updateItemDetails({...itemDetails, description: event.target.value})}
                 />
                 <Button
                     className={classes.item}
                     variant='contained'
                     color='primary'
-                    onClick={() => console.log("post item to server")}>
+                    onClick={() => postItem(itemDetails)}>
                     SAVE
                 </Button>
             </div>
