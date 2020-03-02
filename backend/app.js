@@ -1,7 +1,7 @@
 const express = require('express')
 const HttpStatus = require('http-status-codes');
 
-const { createItem, getItems } = require('./model/item.js')
+const { createItem, getItems, deleteItem } = require('./model/item.js')
 
 const app = express()
 app.use(express.json())
@@ -39,6 +39,21 @@ app.get(baseUrl + '/items', async (req, res) => {
     } catch (error) {
         console.log(error)
         res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ errorMessage: 'Something went wrong when retrieving items' })
+    }
+})
+
+app.delete(baseUrl + '/item/:id', async (req, res) => {
+    const itemId = req.params.id
+    try {
+        const deleted = await deleteItem(itemId)
+        if (deleted) {
+            res.status(HttpStatus.OK).send()
+        } else {
+            res.status(HttpStatus.BAD_REQUEST).json({ errorMessage: `Item with ${itemId} does not exist.`})
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ errorMessage: `Something went wrong when deleting item with id: ${itemId}` })
     }
 })
 

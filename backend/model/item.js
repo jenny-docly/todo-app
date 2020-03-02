@@ -10,6 +10,14 @@ const createItem = (title, description) => {
     })
 }
 
+const deleteItem = (itemId) => {
+    return new Promise((resolve, reject) => {
+        client.query(`DELETE FROM todo.items WHERE todo.items.id = ${itemId}`)
+        .then((result) => resolve(result.rowCount == 1))
+        .catch(error => reject(error))
+    })
+}
+
 const getItems = () => {
     return new Promise((resolve, reject) => {
         client.query('SELECT * FROM todo.items')
@@ -20,5 +28,6 @@ const getItems = () => {
 
 module.exports = {
     createItem,
-    getItems
+    getItems,
+    deleteItem
 }
