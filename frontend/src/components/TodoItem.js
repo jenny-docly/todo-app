@@ -1,20 +1,20 @@
 import React from 'react'
-
-const styles = {
-    item: {
-        display: 'flex',
-        flexDirection: 'column',
-        background: 'gray',
-        padding: '5px 10px 5px',
-    }
-}
+import { ListItem, ListItemText, ListItemIcon, Checkbox } from '@material-ui/core'
+import DeleteIcon from '@material-ui/icons/Delete'
+import EditIcon from '@material-ui/icons/Edit'
 
 function TodoItem(props) {
     return (
-        <div style={styles.item}>
-            <div>{props.title}</div>
-            <div>{props.description}</div>
-        </div>
+        <ListItem button>
+            <Checkbox></Checkbox>
+            <ListItemText primary={props.title} />
+            <ListItemIcon>
+                <EditIcon />
+            </ListItemIcon>
+            <ListItemIcon>
+                <DeleteIcon />
+            </ListItemIcon>
+        </ListItem>
     )
 }
 
