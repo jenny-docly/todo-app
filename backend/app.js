@@ -6,6 +6,11 @@ const { createItem, getItems } = require('./model/item.js')
 const app = express()
 app.use(express.json())
 
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*')
+    next()
+})
+
 const port = 8080;
 
 const baseUrl = '/api/v1/todo'
