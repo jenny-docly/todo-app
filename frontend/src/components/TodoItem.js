@@ -7,16 +7,17 @@ import EditIcon from '@material-ui/icons/Edit'
 
 const useStyles = makeStyles(() => ({
     title: {
-      paddingRight: 100,
-    },
-  }));
+        paddingRight: 100,
+    }
+})
+)
 
 function TodoItem(props) {
     const classes = useStyles();
     return (
         <ListItem button>
             <Checkbox></Checkbox>
-            <ListItemText primary={props.title} className={classes.title}/>
+            <ListItemText primary={props.title} className={classes.title} />
             <ListItemIcon>
                 <EditIcon />
             </ListItemIcon>
