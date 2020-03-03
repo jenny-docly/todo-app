@@ -1,29 +1,25 @@
 import React, { useState } from "react";
-import { Button } from "@material-ui/core";
 
 import TodoList from "./components/TodoList";
-import TodoItemModal from "./components/TodoItemModal";
+import AddTodo from "./components/AddTodo";
 
 const styles = {
-  centered: {
-    position: "fixed",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)"
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    margin: 50,
+  },
+  addTodo: {
+    marginLeft: 200,
+    background: 'green'
   }
 };
 
 function App() {
-  const [showModal, setShowModal] = useState(false);
   return (
-    <div style={styles.centered}>
-      <Button variant="contained" onClick={() => setShowModal(true)}>
-        NEW TODO
-      </Button>
+    <div style={styles.container}>
       <TodoList />
-      {showModal && (
-        <TodoItemModal onClose={() => setShowModal(false)}></TodoItemModal>
-      )}
+      <AddTodo style={styles.addTodo} />
     </div>
   );
 }
