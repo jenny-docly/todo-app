@@ -2,7 +2,7 @@
 import React from 'react'
 import TodoItem from './TodoItem'
 import { useEndpoint } from '../api/useEndpoint.js'
-import { BASE_URL } from '../api/constants.js'
+import { BASE_URL } from '../api/api.js'
 import { Divider, Paper } from '@material-ui/core'
 
 const ITEMS_ENDPOINT = BASE_URL + '/items';

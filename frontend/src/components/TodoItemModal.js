@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Modal, TextField, Button } from '@material-ui/core';
-import { BASE_URL } from '../api/constants';
+import { postItem } from '../api/api.js';
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -19,30 +19,6 @@ const useStyles = makeStyles(theme => ({
         margin: theme.spacing(2)
     }
 }));
-
-const postItem = (payload) => {
-    console.log(payload)
-    fetch(BASE_URL + '/item', {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload),
-    })
-    .then((response) => {
-        if (response.ok) {
-            return response.json()
-        }
-        return null
-    })
-    .then(data => {
-        console.log("data", data)
-    })
-    .catch(error => {
-        console.log("error", error)
-    })
-}
 
 function TodoItemModal(props) {
     const classes = useStyles()
