@@ -1,5 +1,7 @@
 import React from "react";
 
+import { useDispatch } from "react-redux";
+
 import { makeStyles } from "@material-ui/core/styles";
 import {
   ListItem,
@@ -10,6 +12,7 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 
+import { deleteItem as deleteItemAction } from "../store/actions.js";
 import { deleteItem } from "../api/api.js";
 
 const useStyles = makeStyles(() => ({
@@ -18,8 +21,27 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
+/**
+ * Deletes the item with the specified id from the backend and
+ * dispatches a Redux action upon success, to remove it from the
+ * store.
+ *
+ * @param {*} id - The id of the item to remove.
+ * @param {*} dispatch - Redux dispatch function.
+ */
+const deleteTodoItem = async (id, dispatch) => {
+  try {
+    await deleteItem(id);
+    dispatch(deleteItemAction(id));
+  } catch (error) {
+    console.log(error);
+    //TODO: show error message
+  }
+};
+
 function TodoItem(props) {
   const classes = useStyles();
+  const dispatch = useDispatch();
   return (
     <ListItem button>
       <Checkbox></Checkbox>
@@ -28,7 +50,7 @@ function TodoItem(props) {
         <EditIcon />
       </ListItemIcon>
       <ListItemIcon>
-        <DeleteIcon onClick={() => deleteItem(props.id)} />
+        <DeleteIcon onClick={() => deleteTodoItem(props.id, dispatch)} />
       </ListItemIcon>
     </ListItem>
   );
