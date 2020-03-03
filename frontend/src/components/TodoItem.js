@@ -12,7 +12,7 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 
-import { deleteItem as deleteItemAction } from "../store/actions.js";
+import { deleteItem as deleteItemAction } from "../store/todo/actions.js";
 import { deleteItem } from "../api/api.js";
 
 const useStyles = makeStyles(() => ({

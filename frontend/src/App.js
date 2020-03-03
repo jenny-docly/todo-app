@@ -3,10 +3,11 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import TodoList from "./components/TodoList";
-import AddTodo from "./components/AddTodo";
 import MenuBar from "./components/MenuBar";
+import TodoItemModal from "./components/TodoItemModal";
 import { getItems } from "./api/api.js";
-import { setItems } from "./store/actions.js";
+import { setItems } from "./store/todo/actions.js";
+import { closeModal } from "./store/ui/actions";
 
 const styles = {
   container: {
@@ -25,7 +26,8 @@ const styles = {
 };
 
 function App() {
-  const items = useSelector(state => state.items);
+  const items = useSelector(state => state.todo.items);
+  const modalOpen = useSelector(state => state.ui.modalOpen);
   const dispatch = useDispatch();
   useEffect(() => {
     async function fetchItems() {
@@ -43,8 +45,8 @@ function App() {
       <div style={styles.listContainer}>
         <MenuBar />
         <TodoList items={items} />
+        <TodoItemModal open={modalOpen} onClose={() => dispatch(closeModal())}></TodoItemModal>
       </div>
-      <AddTodo style={styles.addTodo} />
     </div>
   );
 }

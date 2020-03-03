@@ -4,7 +4,7 @@ const initialState = {
   items: []
 };
 
-export const todoAppReducer = (state = initialState, action) => {
+export const todo = (state = initialState, action) => {
   switch (action.type) {
     case SET_ITEMS:
       return {

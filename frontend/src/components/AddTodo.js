@@ -4,16 +4,17 @@ import { useDispatch } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Button } from "@material-ui/core";
-import { addItem } from "../store/actions.js";
+import { addItem } from "../store/todo/actions.js";
 import { postItem } from "../api/api.js";
+import { closeModal } from "../store/ui/actions.js";
 
 const useStyles = makeStyles(theme => ({
   container: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column"
   },
   item: {
-    margin: theme.spacing(2),
+    margin: theme.spacing(2)
   },
   button: {
     margin: theme.spacing(2),
@@ -22,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 /**
- * Adds the specified item to the backend and dispatches a Redux action 
+ * Adds the specified item to the backend and dispatches a Redux action
  * upon success, to also add it to the store.
  *
  * @param {*} item - The item to add.
@@ -30,13 +31,13 @@ const useStyles = makeStyles(theme => ({
  */
 const addTodoItem = async (item, dispatch) => {
   try {
-    const result = await postItem(item);
+    await postItem(item);
     dispatch(addItem(item));
   } catch (error) {
-    console.log(error)
+    console.log(error);
     //TODO: show error message
   }
-}
+};
 
 function AddTodo(props) {
   const classes = useStyles();
@@ -74,7 +75,10 @@ function AddTodo(props) {
         className={classes.button}
         variant="contained"
         color="primary"
-        onClick={() => addTodoItem(itemDetails, dispatch)}
+        onClick={() => {
+          addTodoItem(itemDetails, dispatch);
+          dispatch(closeModal())
+        }}
       >
         ADD
       </Button>

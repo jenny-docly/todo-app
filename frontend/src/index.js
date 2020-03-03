@@ -2,15 +2,16 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 // Redux
-import { createStore } from "redux";
-import { todoAppReducer } from "./store/reducer.js";
+import { createStore, combineReducers } from "redux";
+import { todo } from "./store/todo/reducer.js";
+import { ui } from "./store/ui/reducer.js";
 import { Provider as Redux } from "react-redux";
 
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
 const store = createStore(
-  todoAppReducer,
+  combineReducers({todo, ui}),
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 const Root = () => (

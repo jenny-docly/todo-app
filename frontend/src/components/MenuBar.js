@@ -1,4 +1,7 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+
+// Material UI
 import {
   AppBar,
   Toolbar,
@@ -8,7 +11,9 @@ import {
 } from "@material-ui/core";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
-import SortIcon from "@material-ui/icons/Sort";
+import AddIcon from '@material-ui/icons/Add';
+
+import { openModal } from "../store/ui/actions.js"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -65,7 +70,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function MenuBar() {
   const classes = useStyles();
-
+  const dispatch = useDispatch();
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -75,9 +80,9 @@ export default function MenuBar() {
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
-            onClick={() => console.log("menu click!")}
+            onClick={() => dispatch(openModal())}
           >
-            <SortIcon />
+            <AddIcon />
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
             Todos

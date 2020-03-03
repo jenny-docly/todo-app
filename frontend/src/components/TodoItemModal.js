@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Modal, TextField, Button } from "@material-ui/core";
-import { postItem } from "../api/api.js";
+import { Modal } from "@material-ui/core";
+import AddTodo from "./AddTodo";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -22,42 +22,10 @@ const useStyles = makeStyles(theme => ({
 
 function TodoItemModal(props) {
   const classes = useStyles();
-  const [itemDetails, updateItemDetails] = useState({
-    title: props.title,
-    description: props.description
-  });
   return (
-    <Modal open onClose={props.onClose}>
+    <Modal open={props.open} onClose={props.onClose}>
       <div className={classes.paper}>
-        <TextField
-          className={classes.item}
-          id="title-field"
-          label="Title"
-          variant="filled"
-          onChange={event =>
-            updateItemDetails({ ...itemDetails, title: event.target.value })
-          }
-        />
-        <TextField
-          className={classes.item}
-          id="description-field"
-          label="Description"
-          variant="filled"
-          onChange={event =>
-            updateItemDetails({
-              ...itemDetails,
-              description: event.target.value
-            })
-          }
-        />
-        <Button
-          className={classes.item}
-          variant="contained"
-          color="primary"
-          onClick={() => postItem(itemDetails)}
-        >
-          SAVE
-        </Button>
+        <AddTodo></AddTodo>
       </div>
     </Modal>
   );
