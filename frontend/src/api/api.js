@@ -29,14 +29,28 @@ export const deleteItem = id => {
   });
 };
 
-export const postItem = payload => {
+export const updateItem = (id, item) => {
+  return new Promise((resolve, reject) => {
+    fetch(BASE_URL + "/item/" + id, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(item)
+    })
+      .then(() => resolve())
+      .catch(error => reject(error));
+  });
+};
+
+export const postItem = item => {
   return new Promise((resolve, reject) => {
     fetch(BASE_URL + "/item", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(item)
     })
       .then(response => (response.ok ? resolve(response.json()) : reject()))
       .catch(error => reject(error));

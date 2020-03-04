@@ -1,4 +1,4 @@
-import { ADD_ITEM, DELETE_ITEM, SET_ITEMS } from "./actions.js";
+import { ADD_ITEM, DELETE_ITEM, SET_ITEMS, UPDATE_ITEM } from "./actions.js";
 
 const initialState = {
   items: []
@@ -16,7 +16,13 @@ export const todo = (state = initialState, action) => {
       };
     case DELETE_ITEM:
       return {
-        items: [...state.items].filter(item => item.id !== action.id)
+        items: state.items.filter(item => item.id !== action.id)
+      };
+    case UPDATE_ITEM:
+      return {
+        items: state.items.map(item =>
+          item.id === action.item.id ? action.item : item
+        )
       };
     default:
       return state;

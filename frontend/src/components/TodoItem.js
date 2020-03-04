@@ -13,7 +13,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 
 import { deleteItem as deleteItemAction } from "../store/todo/actions.js";
-import { deleteItem } from "../api/api.js";
+import { updateItem as updateItemAction } from "../store/todo/actions.js";
+import { deleteItem, updateItem } from "../api/api.js";
 
 const useStyles = makeStyles(() => ({
   title: {
@@ -39,13 +40,28 @@ const deleteTodoItem = async (id, dispatch) => {
   }
 };
 
+const updateTodoItem = async (id, item, dispatch) => {
+  try {
+    await updateItem(id, item);
+    dispatch(updateItemAction(id, item));
+  } catch (error) {
+    console.log(error);
+    //TODO: show error message
+  }
+};
+
 function TodoItem(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { id, title, completed } = props.item;
   return (
     <ListItem button>
-      <Checkbox checked={completed}></Checkbox>
+      <Checkbox
+        checked={completed}
+        onChange={event =>
+          updateTodoItem(id, { ...props.item, completed: event.target.checked }, dispatch)
+        }
+      ></Checkbox>
       <ListItemText primary={title} className={classes.title} />
       <ListItemIcon>
         <EditIcon />
