@@ -42,15 +42,16 @@ const deleteTodoItem = async (id, dispatch) => {
 function TodoItem(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { id, title, completed } = props.item;
   return (
     <ListItem button>
-      <Checkbox></Checkbox>
-      <ListItemText primary={props.title} className={classes.title} />
+      <Checkbox checked={completed}></Checkbox>
+      <ListItemText primary={title} className={classes.title} />
       <ListItemIcon>
         <EditIcon />
       </ListItemIcon>
       <ListItemIcon>
-        <DeleteIcon onClick={() => deleteTodoItem(props.id, dispatch)} />
+        <DeleteIcon onClick={() => deleteTodoItem(id, dispatch)} />
       </ListItemIcon>
     </ListItem>
   );

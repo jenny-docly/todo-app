@@ -9,11 +9,7 @@ function TodoList(props) {
         props.items &&
         props.items.map((item, index) => (
           <div key={item.id}>
-            <TodoItem
-              id={item.id}
-              title={item.title}
-              description={item.description}
-            />
+            <TodoItem item={item}/>
             {index < props.items.length - 1 && <Divider />}
           </div>
         ))}
