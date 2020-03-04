@@ -1,6 +1,6 @@
 const { client } = require("../database.js");
 
-const createItem = (title, description) => {
+const createItem = ({ title, description }) => {
   return new Promise((resolve, reject) => {
     client
       .query(
@@ -8,6 +8,18 @@ const createItem = (title, description) => {
         [title, description]
       )
       .then(result => resolve(result.rows[0].id))
+      .catch(error => reject(error));
+  });
+};
+
+const updateItem = (id, { title, description, completed }) => {
+  return new Promise((resolve, reject) => {
+    client
+      .query(
+        "UPDATE todo.items SET title = ($1), description = ($2), completed = ($3) WHERE todo.items.id = ($4)",
+        [title, description, completed, id,]
+      )
+      .then(result => resolve(result.rowCount == 1))
       .catch(error => reject(error));
   });
 };
@@ -33,5 +45,6 @@ const getItems = () => {
 module.exports = {
   createItem,
   getItems,
-  deleteItem
+  deleteItem,
+  updateItem
 };
