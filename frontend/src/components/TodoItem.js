@@ -57,16 +57,19 @@ function TodoItem(props) {
   const { id, title, completed } = props.item;
   return (
     <ListItem onClick={() => dispatch(openModal("view", props.item))} button>
-      <Checkbox
-        checked={completed}
-        onChange={event =>
-          updateTodoItem(
-            id,
-            { ...props.item, completed: event.target.checked },
-            dispatch
-          )
-        }
-      ></Checkbox>
+      <ListItemIcon>
+        <Checkbox
+          checked={completed}
+          onClick={event => {
+            updateTodoItem(
+              id,
+              { ...props.item, completed: event.target.checked },
+              dispatch
+            );
+            event.stopPropagation();
+          }}
+        ></Checkbox>
+      </ListItemIcon>
       <ListItemText primary={title} className={classes.title} />
       <ListItemIcon>
         <EditIcon
@@ -78,7 +81,7 @@ function TodoItem(props) {
       </ListItemIcon>
       <ListItemIcon>
         <DeleteIcon
-          onClick={(event) => {
+          onClick={event => {
             deleteTodoItem(id, dispatch);
             event.stopPropagation();
           }}
