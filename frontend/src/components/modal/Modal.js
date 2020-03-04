@@ -8,6 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 // Components
 import AddTodo from "./AddTodo";
 import EditTodo from "./EditTodo";
+import ViewTodo from "./ViewTodo";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -26,13 +27,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Modal(props) {
+function Modal({ mode, open, item, onClose }) {
   const classes = useStyles();
   return (
-    <MuiModal open={props.open} onClose={props.onClose}>
+    <MuiModal open={open} onClose={onClose}>
       <div className={classes.paper}>
-        {props.mode === "add" && <AddTodo />}
-        {props.mode === "edit" && <EditTodo item={props.item}></EditTodo>}
+        {mode === "add" && <AddTodo />}
+        {mode === "edit" && <EditTodo item={item}></EditTodo>}
+        {mode === "view" && <ViewTodo item={item}></ViewTodo>}
       </div>
     </MuiModal>
   );
@@ -40,8 +42,8 @@ function Modal(props) {
 
 Modal.propTypes = {
   open: PropTypes.bool,
-  mode: PropTypes.oneOf(['add', 'edit', 'view']),
+  mode: PropTypes.oneOf(["add", "edit", "view"]),
   item: PropTypes.object
-}
+};
 
 export default Modal;
