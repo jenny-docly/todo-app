@@ -12,16 +12,11 @@ import { closeModal } from "./store/ui/actions";
 const styles = {
   container: {
     display: "flex",
-    flexDirection: "row",
-    margin: 50
-  },
-  listContainer: {
-    display: "flex",
-    flexDirection: "column"
-  },
-  addTodo: {
-    marginLeft: 200,
-    background: "green"
+    flexDirection: "column",
+    position: "fixed",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)"
   }
 };
 
@@ -42,11 +37,12 @@ function App() {
   }, []);
   return (
     <div style={styles.container}>
-      <div style={styles.listContainer}>
-        <MenuBar />
-        <TodoList items={items} />
-        <TodoItemModal open={modalOpen} onClose={() => dispatch(closeModal())}></TodoItemModal>
-      </div>
+      <MenuBar />
+      <TodoList items={items} />
+      <TodoItemModal
+        open={modalOpen}
+        onClose={() => dispatch(closeModal())}
+      ></TodoItemModal>
     </div>
   );
 }
