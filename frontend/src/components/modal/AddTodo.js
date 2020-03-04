@@ -40,10 +40,15 @@ const addTodoItem = async (item, dispatch) => {
   }
 };
 
+const validateInput = item => {
+  return item && item.title && item.title !== "";
+};
+
 function AddTodo() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [itemDetails, updateItemDetails] = useState();
+  const [error, setError] = useState(false);
+  const [item, updateItem] = useState();
   return (
     <div className={classes.container}>
       <TextField
@@ -51,9 +56,11 @@ function AddTodo() {
         id="title-field"
         label="Add new item"
         variant="filled"
-        onChange={event =>
-          updateItemDetails({ ...itemDetails, title: event.target.value })
-        }
+        helperText={error ? "Title can not be empty" : ""}
+        onChange={event => {
+          setError(false);
+          updateItem({ ...item, title: event.target.value });
+        }}
       />
       <TextField
         className={classes.item}
@@ -63,8 +70,8 @@ function AddTodo() {
         rowsMax="4"
         variant="filled"
         onChange={event =>
-          updateItemDetails({
-            ...itemDetails,
+          updateItem({
+            ...item,
             description: event.target.value
           })
         }
@@ -74,8 +81,9 @@ function AddTodo() {
         variant="contained"
         color="primary"
         onClick={() => {
-          addTodoItem(itemDetails, dispatch);
-          dispatch(closeModal())
+          validateInput(item)
+            ? addTodoItem(item, dispatch) && dispatch(closeModal())
+            : setError(true);
         }}
       >
         ADD
