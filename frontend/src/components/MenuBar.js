@@ -80,7 +80,7 @@ export default function MenuBar() {
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
-            onClick={() => dispatch(openModal())}
+            onClick={() => dispatch(openModal('add', null))}
           >
             <AddIcon />
           </IconButton>

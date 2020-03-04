@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-
 import { useDispatch } from "react-redux";
+import PropTypes from "prop-types";
 
+// Material UI
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Button } from "@material-ui/core";
-import { addItem } from "../store/todo/actions.js";
-import { postItem } from "../api/api.js";
-import { closeModal } from "../store/ui/actions.js";
+
+import { updateItem as updateItemAction } from "../../store/todo/actions.js";
+import { updateItem } from "../../api/api.js";
+import { closeModal } from "../../store/ui/actions.js";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -22,45 +24,38 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-/**
- * Adds the specified item to the backend and dispatches a Redux action
- * upon success, to also add it to the store.
- *
- * @param {*} item - The item to add.
- * @param {*} dispatch - Redux dispatch function.
- */
-const addTodoItem = async (item, dispatch) => {
+const updateTodoItem = async (id, item, dispatch) => {
   try {
-    await postItem(item);
-    dispatch(addItem(item));
+    await updateItem(id, item);
+    dispatch(updateItemAction(id, item));
   } catch (error) {
     console.log(error);
     //TODO: show error message
   }
 };
 
-function AddTodo(props) {
+function EditTodo(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [itemDetails, updateItemDetails] = useState({
-    title: props.title,
-    description: props.description
-  });
+  const [itemDetails, updateItemDetails] = useState(props.item);
   return (
     <div className={classes.container}>
       <TextField
         className={classes.item}
         id="title-field"
-        label="Add new item"
+        defaultValue={props.item.title}
         variant="filled"
         onChange={event =>
-          updateItemDetails({ ...itemDetails, title: event.target.value })
+          updateItemDetails({
+            ...itemDetails,
+            title: event.target.value
+          })
         }
       />
       <TextField
         className={classes.item}
         id="description-field"
-        label="Description"
+        defaultValue={props.item.description}
         multiline
         rowsMax="4"
         variant="filled"
@@ -76,14 +71,18 @@ function AddTodo(props) {
         variant="contained"
         color="primary"
         onClick={() => {
-          addTodoItem(itemDetails, dispatch);
-          dispatch(closeModal())
+          updateTodoItem(props.item.id, itemDetails, dispatch);
+          dispatch(closeModal());
         }}
       >
-        ADD
+        SAVE
       </Button>
     </div>
   );
 }
 
-export default AddTodo;
+EditTodo.propTypes = {
+  item: PropTypes.object
+}
+
+export default EditTodo;

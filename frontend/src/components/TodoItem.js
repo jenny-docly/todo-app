@@ -14,6 +14,7 @@ import EditIcon from "@material-ui/icons/Edit";
 
 import { deleteItem as deleteItemAction } from "../store/todo/actions.js";
 import { updateItem as updateItemAction } from "../store/todo/actions.js";
+import { openModal } from "../store/ui/actions.js";
 import { deleteItem, updateItem } from "../api/api.js";
 
 const useStyles = makeStyles(() => ({
@@ -64,7 +65,7 @@ function TodoItem(props) {
       ></Checkbox>
       <ListItemText primary={title} className={classes.title} />
       <ListItemIcon>
-        <EditIcon />
+        <EditIcon onClick={() => dispatch(openModal('edit', props.item))} />
       </ListItemIcon>
       <ListItemIcon>
         <DeleteIcon onClick={() => deleteTodoItem(id, dispatch)} />

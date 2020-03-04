@@ -1,7 +1,13 @@
 import React from "react";
+import PropTypes from "prop-types";
+
+// Material UI
+import { Modal as MuiModal } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Modal } from "@material-ui/core";
+
+// Components
 import AddTodo from "./AddTodo";
+import EditTodo from "./EditTodo";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -20,15 +26,22 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function TodoItemModal(props) {
+function Modal(props) {
   const classes = useStyles();
   return (
-    <Modal open={props.open} onClose={props.onClose}>
+    <MuiModal open={props.open} onClose={props.onClose}>
       <div className={classes.paper}>
-        <AddTodo></AddTodo>
+        {props.mode === "add" && <AddTodo />}
+        {props.mode === "edit" && <EditTodo item={props.item}></EditTodo>}
       </div>
-    </Modal>
+    </MuiModal>
   );
 }
 
-export default TodoItemModal;
+Modal.propTypes = {
+  open: PropTypes.bool,
+  mode: PropTypes.oneOf(['add', 'edit', 'view']),
+  item: PropTypes.object
+}
+
+export default Modal;
