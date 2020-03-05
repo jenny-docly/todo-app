@@ -22,19 +22,19 @@ const styles = {
 
 function App() {
   const items = useSelector(state => state.todo.items);
-  const modal = useSelector(state => state.ui.modal);
+  const { modal, todolist } = useSelector(state => state.ui);
   const dispatch = useDispatch();
   useEffect(() => {
     async function fetchItems() {
       try {
-        const items = await getItems();
+        const items = await getItems(todolist.searchString);
         dispatch(setItems(items));
       } catch (error) {
         console.log(error);
       }
     }
     fetchItems();
-  }, []);
+  }, [todolist]);
   return (
     <div style={styles.container}>
       <MenuBar />

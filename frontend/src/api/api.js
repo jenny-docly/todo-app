@@ -3,9 +3,9 @@
  */
 export const BASE_URL = "http://localhost:8080/api/v1/todo";
 
-export const getItems = () => {
+export const getItems = searchString => {
   return new Promise((resolve, reject) => {
-    fetch(BASE_URL + "/items", {
+    fetch(`${BASE_URL}/items?searchBy=${searchString}`, {
       method: "GET"
     })
       .then(response => {

@@ -13,7 +13,7 @@ import { fade, makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import AddIcon from '@material-ui/icons/Add';
 
-import { openModal } from "../store/ui/actions.js"
+import { openModal, searchBy } from "../store/ui/actions.js"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -98,7 +98,7 @@ export default function MenuBar() {
                 input: classes.inputInput
               }}
               inputProps={{ "aria-label": "search" }}
-              onChange={event => console.log("search: " + event.target.value)}
+              onChange={event => dispatch(searchBy(event.target.value))}
             />
           </div>
         </Toolbar>
