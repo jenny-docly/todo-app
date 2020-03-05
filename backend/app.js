@@ -6,7 +6,7 @@ const {
   getItems,
   deleteItem,
   updateItem
-} = require("./model/item.js");
+} = require("./model/items.js");
 
 const app = express();
 app.use(express.json());

@@ -1,6 +1,6 @@
 const { client } = require("../database.js");
 
-const QUERY_SEARCH = "SELECT * FROM todo.items WHERE title LIKE $1";
+const QUERY_SEARCH = "SELECT * FROM todo.items WHERE title ILIKE $1";
 const QUERY_ALL = "SELECT * FROM todo.items";
 
 const createItem = ({ title, description }) => {
