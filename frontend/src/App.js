@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
-
 import { useSelector, useDispatch } from "react-redux";
+
+import { Pagination } from '@material-ui/lab';
 
 import TodoList from "./components/TodoList";
 import MenuBar from "./components/MenuBar";
@@ -11,12 +12,9 @@ import { closeModal } from "./store/ui/actions";
 
 const styles = {
   container: {
-    display: "flex",
-    flexDirection: "column",
-    position: "fixed",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)"
+    margin: 'auto',
+    width: '50%',
+    marginTop: '100px',
   }
 };
 
@@ -39,6 +37,11 @@ function App() {
     <div style={styles.container}>
       <MenuBar />
       <TodoList items={items} />
+      <Pagination
+        count={3}
+        page={1}
+        onChange={(event, value) => console.log("value: ", value)}
+      />
       <Modal
         mode={modal.mode}
         item={modal.item}
