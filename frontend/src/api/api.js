@@ -14,7 +14,7 @@ export const getItems = searchString => {
         }
         return null;
       })
-      .then(data => resolve(data))
+      .then(data => resolve(data.items))
       .catch(error => reject(error));
   });
 };

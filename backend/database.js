@@ -1,6 +1,6 @@
-const { Client } = require("pg");
+const { Pool } = require("pg");
 
-const client = new Client({
+const pool = new Pool({
   host: "database-instance.cgh8xaxjrxgl.eu-west-1.rds.amazonaws.com",
   port: 5432,
   database: "todo_db",
@@ -8,7 +8,7 @@ const client = new Client({
   password: "qlik-assignment"
 });
 
-client.connect(error => {
+pool.connect(error => {
   if (error) {
     console.error("Failed to connect to database:", error.stack);
   } else {
@@ -17,5 +17,5 @@ client.connect(error => {
 });
 
 module.exports = {
-  client
+  pool
 };
