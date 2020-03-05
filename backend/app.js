@@ -84,7 +84,7 @@ app.put(baseUrl + "/item/:id", async (req, res) => {
 
 app.get(baseUrl + "/items", async (req, res) => {
   try {
-    const items = await getItems();
+    const items = await getItems(req.query.searchBy);
     res.status(HttpStatus.OK).json(items);
   } catch (error) {
     console.log(error);

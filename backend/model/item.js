@@ -1,5 +1,8 @@
 const { client } = require("../database.js");
 
+const QUERY_SEARCH = "SELECT * FROM todo.items WHERE title LIKE $1";
+const QUERY_ALL = "SELECT * FROM todo.items";
+
 const createItem = ({ title, description }) => {
   return new Promise((resolve, reject) => {
     client
@@ -16,8 +19,8 @@ const updateItem = (id, { title, description, completed }) => {
   return new Promise((resolve, reject) => {
     client
       .query(
-        "UPDATE todo.items SET title = ($1), description = ($2), completed = ($3) WHERE todo.items.id = ($4)",
-        [title, description, completed, id,]
+        "UPDATE todo.items SET title = $1, description = $2, completed = $3 WHERE todo.items.id = $4",
+        [title, description, completed, id]
       )
       .then(result => resolve(result.rowCount == 1))
       .catch(error => reject(error));
@@ -33,10 +36,12 @@ const deleteItem = itemId => {
   });
 };
 
-const getItems = () => {
+const getItems = searchBy => {
   return new Promise((resolve, reject) => {
+    const query = searchBy ? QUERY_SEARCH : QUERY_ALL;
+    const params = searchBy ? [`%${searchBy}%`] : [];
     client
-      .query("SELECT * FROM todo.items")
+      .query(query, params)
       .then(result => resolve(result.rows))
       .catch(error => reject(error));
   });
