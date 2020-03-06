@@ -24,6 +24,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const validateInput = item => {
+  return item && item.title && item.title !== "";
+};
+
 const updateTodoItem = async (id, item, dispatch) => {
   try {
     await updateItem(id, item);
@@ -34,34 +38,37 @@ const updateTodoItem = async (id, item, dispatch) => {
   }
 };
 
-function EditTodo(props) {
+function EditTodo({ item }) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [itemDetails, updateItemDetails] = useState(props.item);
+  const [error, setError] = useState(false);
+  const [editedItem, editItem] = useState(item);
   return (
     <div className={classes.container}>
       <TextField
         className={classes.item}
         id="title-field"
-        defaultValue={props.item.title}
+        defaultValue={item.title}
         variant="filled"
-        onChange={event =>
-          updateItemDetails({
-            ...itemDetails,
+        onChange={event => {
+          setError(false);
+          editItem({
+            ...editedItem,
             title: event.target.value
-          })
-        }
+          });
+        }}
+        helperText={error ? "Title can not be empty" : ""}
       />
       <TextField
         className={classes.item}
         id="description-field"
-        defaultValue={props.item.description}
+        defaultValue={item.description}
         multiline
         rowsMax="4"
         variant="filled"
         onChange={event =>
-          updateItemDetails({
-            ...itemDetails,
+          editItem({
+            ...editedItem,
             description: event.target.value
           })
         }
@@ -71,8 +78,10 @@ function EditTodo(props) {
         variant="contained"
         color="primary"
         onClick={() => {
-          updateTodoItem(props.item.id, itemDetails, dispatch);
-          dispatch(closeModal());
+          validateInput(editedItem)
+            ? updateTodoItem(item.id, editedItem, dispatch) &&
+              dispatch(closeModal())
+            : setError(true);
         }}
       >
         SAVE
@@ -83,6 +92,6 @@ function EditTodo(props) {
 
 EditTodo.propTypes = {
   item: PropTypes.object
-}
+};
 
 export default EditTodo;
