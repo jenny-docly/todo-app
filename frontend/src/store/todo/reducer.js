@@ -1,28 +1,42 @@
-import { ADD_ITEM, DELETE_ITEM, SET_ITEMS, UPDATE_ITEM } from "./actions.js";
+import {
+  SET_ITEMS,
+  SET_ITEM_COUNT,
+  ITEMS_MODIFIED,
+  UPDATE_OFFSET
+} from "./actions.js";
 
 const initialState = {
-  items: []
+  itemCount: 0,
+  items: [],
+  stale: false,
+  paging: {
+    pageSize: 10,
+    offset: 0
+  }
 };
 
 export const todo = (state = initialState, action) => {
   switch (action.type) {
     case SET_ITEMS:
       return {
-        items: action.items
+        ...state,
+        items: action.items,
+        stale: false
       };
-    case ADD_ITEM:
+    case SET_ITEM_COUNT:
       return {
-        items: [...state.items, action.item]
+        ...state,
+        itemCount: action.count
       };
-    case DELETE_ITEM:
+    case ITEMS_MODIFIED:
       return {
-        items: state.items.filter(item => item.id !== action.id)
+        ...state,
+        stale: true
       };
-    case UPDATE_ITEM:
+    case UPDATE_OFFSET:
       return {
-        items: state.items.map(item =>
-          item.id === action.item.id ? action.item : item
-        )
+        ...state,
+        paging: { ...state.paging, offset: action.offset }
       };
     default:
       return state;

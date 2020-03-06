@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Button } from "@material-ui/core";
 
-import { addItem } from "../../store/todo/actions.js";
+import { itemsModified } from "../../store/todo/actions.js";
 import { postItem } from "../../api/api.js";
 import { closeModal } from "../../store/ui/actions.js";
 
@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
 const addTodoItem = async (item, dispatch) => {
   try {
     await postItem(item);
-    dispatch(addItem(item));
+    dispatch(itemsModified(item));
   } catch (error) {
     console.log(error);
     //TODO: show error message

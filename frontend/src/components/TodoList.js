@@ -1,20 +1,52 @@
 import React from "react";
-import TodoItem from "./TodoItem";
-import { Divider, Paper } from "@material-ui/core";
+import PropTypes from "prop-types";
 
-function TodoList(props) {
+import { Divider, Paper } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import { Pagination } from "@material-ui/lab";
+
+import { updatePageOffset } from "../store/todo/actions";
+import TodoItem from "./TodoItem";
+
+const styles = {
+  container: {
+    display: "flex",
+    flexDirection: "column"
+  },
+  pagination: {
+    marginTop: "15px",
+    alignSelf: "center"
+  }
+};
+
+function TodoList({ items, itemCount, pageSize }) {
+  const dispatch = useDispatch();
   return (
-    <Paper elevation={3}>
-      {props &&
-        props.items &&
-        props.items.map((item, index) => (
-          <div key={item.id}>
-            <TodoItem item={item}/>
-            {index < props.items.length - 1 && <Divider />}
-          </div>
-        ))}
-    </Paper>
+    <div style={styles.container}>
+      <Paper elevation={3}>
+        {items &&
+          items.map((item, index) => (
+            <div key={item.id}>
+              <TodoItem item={item} />
+              {index < items.length - 1 && <Divider />}
+            </div>
+          ))}
+      </Paper>
+      <Pagination
+        style={styles.pagination}
+        count={Math.ceil(itemCount / pageSize)}
+        onChange={(event, value) => {
+          dispatch(updatePageOffset(pageSize * value - pageSize));
+        }}
+      />
+    </div>
   );
 }
+
+TodoList.propTypes = {
+  items: PropTypes.array,
+  itemCount: PropTypes.number,
+  pageSize: PropTypes.number
+};
 
 export default TodoList;

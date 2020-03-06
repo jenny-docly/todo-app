@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Button } from "@material-ui/core";
 
-import { updateItem as updateItemAction } from "../../store/todo/actions.js";
+import { itemsModified } from "../../store/todo/actions.js";
 import { updateItem } from "../../api/api.js";
 import { closeModal } from "../../store/ui/actions.js";
 
@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
 const updateTodoItem = async (id, item, dispatch) => {
   try {
     await updateItem(id, item);
-    dispatch(updateItemAction(id, item));
+    dispatch(itemsModified());
   } catch (error) {
     console.log(error);
     //TODO: show error message

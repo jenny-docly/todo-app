@@ -12,8 +12,7 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 
-import { deleteItem as deleteItemAction } from "../store/todo/actions.js";
-import { updateItem as updateItemAction } from "../store/todo/actions.js";
+import { itemsModified } from "../store/todo/actions.js";
 import { openModal } from "../store/ui/actions.js";
 import { deleteItem, updateItem } from "../api/api.js";
 
@@ -34,7 +33,7 @@ const useStyles = makeStyles(() => ({
 const deleteTodoItem = async (id, dispatch) => {
   try {
     await deleteItem(id);
-    dispatch(deleteItemAction(id));
+    dispatch(itemsModified());
   } catch (error) {
     console.log(error);
     //TODO: show error message
@@ -44,7 +43,7 @@ const deleteTodoItem = async (id, dispatch) => {
 const updateTodoItem = async (id, item, dispatch) => {
   try {
     await updateItem(id, item);
-    dispatch(updateItemAction(id, item));
+    dispatch(itemsModified());
   } catch (error) {
     console.log(error);
     //TODO: show error message

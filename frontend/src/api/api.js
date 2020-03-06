@@ -3,18 +3,23 @@
  */
 export const BASE_URL = "http://localhost:8080/api/v1/todo";
 
-export const getItems = searchString => {
+export const getItems = (searchString, limit, offset) => {
   return new Promise((resolve, reject) => {
-    fetch(`${BASE_URL}/items?searchBy=${searchString}`, {
-      method: "GET"
-    })
+    fetch(
+      `${BASE_URL}/items?searchBy=${searchString}&limit=${limit}&offset=${offset}`,
+      {
+        method: "GET"
+      }
+    )
       .then(response => {
         if (response.ok) {
           return response.json();
         }
         return null;
       })
-      .then(data => resolve(data.items))
+      .then(data =>
+        resolve({ itemCount: Number(data.itemCount), items: data.items })
+      )
       .catch(error => reject(error));
   });
 };

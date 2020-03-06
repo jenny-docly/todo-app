@@ -1,46 +1,50 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { Pagination } from '@material-ui/lab';
-
 import TodoList from "./components/TodoList";
 import MenuBar from "./components/MenuBar";
 import Modal from "./components/modal/Modal";
 import { getItems } from "./api/api.js";
-import { setItems } from "./store/todo/actions.js";
+import { setItems, setItemCount } from "./store/todo/actions.js";
 import { closeModal } from "./store/ui/actions";
 
 const styles = {
   container: {
-    margin: 'auto',
-    width: '50%',
-    marginTop: '100px',
+    margin: "auto",
+    width: "50%",
+    marginTop: "100px"
   }
 };
 
 function App() {
-  const items = useSelector(state => state.todo.items);
+  const { itemCount, items, stale, paging } = useSelector(state => state.todo);
   const { modal, todolist } = useSelector(state => state.ui);
   const dispatch = useDispatch();
   useEffect(() => {
     async function fetchItems() {
       try {
-        const items = await getItems(todolist.searchString);
-        dispatch(setItems(items));
+        const response = await getItems(
+          todolist.searchString,
+          paging.pageSize,
+          paging.offset
+        );
+        dispatch(setItems(response.items));
+        dispatch(setItemCount(response.itemCount));
       } catch (error) {
         console.log(error);
       }
     }
     fetchItems();
-  }, [todolist]);
+    // eslint-disable-next-line
+  }, [todolist.searchString, stale, paging]);
+
   return (
     <div style={styles.container}>
       <MenuBar />
-      <TodoList items={items} />
-      <Pagination
-        count={3}
-        page={1}
-        onChange={(event, value) => console.log("value: ", value)}
+      <TodoList
+        items={items}
+        itemCount={itemCount}
+        pageSize={paging.pageSize}
       />
       <Modal
         mode={modal.mode}
