@@ -2,7 +2,8 @@ import {
   SET_ITEMS,
   SET_ITEM_COUNT,
   ITEMS_MODIFIED,
-  UPDATE_OFFSET
+  UPDATE_OFFSET,
+  SEARCH_BY
 } from "./actions.js";
 
 const initialState = {
@@ -12,7 +13,8 @@ const initialState = {
   paging: {
     pageSize: 10,
     offset: 0
-  }
+  },
+  searchString: ""
 };
 
 export const todo = (state = initialState, action) => {
@@ -37,6 +39,12 @@ export const todo = (state = initialState, action) => {
       return {
         ...state,
         paging: { ...state.paging, offset: action.offset }
+      };
+    case SEARCH_BY:
+      return {
+        ...state,
+        paging: { ...state.paging, offset: 0 },
+        searchString: action.searchString
       };
     default:
       return state;

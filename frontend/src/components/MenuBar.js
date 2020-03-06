@@ -13,7 +13,8 @@ import { fade, makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import AddIcon from '@material-ui/icons/Add';
 
-import { openModal, searchBy } from "../store/ui/actions.js"
+import { openModal } from "../store/ui/actions.js"
+import { searchBy } from "../store/todo/actions.js"
 
 const useStyles = makeStyles(theme => ({
   root: {

@@ -17,14 +17,14 @@ const styles = {
 };
 
 function App() {
-  const { itemCount, items, stale, paging } = useSelector(state => state.todo);
-  const { modal, todolist } = useSelector(state => state.ui);
+  const { itemCount, items, stale, paging, searchString } = useSelector(state => state.todo);
+  const { modal } = useSelector(state => state.ui);
   const dispatch = useDispatch();
   useEffect(() => {
     async function fetchItems() {
       try {
         const response = await getItems(
-          todolist.searchString,
+          searchString,
           paging.pageSize,
           paging.offset
         );
@@ -36,7 +36,7 @@ function App() {
     }
     fetchItems();
     // eslint-disable-next-line
-  }, [todolist.searchString, stale, paging]);
+  }, [searchString, stale, paging]);
 
   return (
     <div style={styles.container}>

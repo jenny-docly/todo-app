@@ -1,4 +1,4 @@
-import { OPEN_MODAL, CLOSE_MODAL, SEARCH_BY } from "./actions.js";
+import { OPEN_MODAL, CLOSE_MODAL } from "./actions.js";
 
 const initialState = {
   modal: {
@@ -6,9 +6,6 @@ const initialState = {
     open: false,
     item: null
   },
-  todolist: {
-    searchString: ""
-  }
 };
 
 export const ui = (state = initialState, action) => {
@@ -27,11 +24,6 @@ export const ui = (state = initialState, action) => {
       return {
         ...state,
         modal: { ...state.modal, open: false }
-      };
-    case SEARCH_BY:
-      return {
-        ...state,
-        todolist: { ...state.todolist, searchString: action.searchString }
       };
     default:
       return state;
