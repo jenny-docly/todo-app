@@ -1,6 +1,7 @@
 const { pool } = require("../database.js");
 
-const QUERY_SEARCH = "SELECT * FROM todo.items WHERE title ILIKE $1 ORDER BY id LIMIT $2 OFFSET $3";
+const QUERY_SEARCH =
+  "SELECT * FROM todo.items WHERE title ILIKE $1 ORDER BY id LIMIT $2 OFFSET $3";
 const QUERY_ALL = "SELECT * FROM todo.items ORDER BY id LIMIT $1 OFFSET $2";
 
 const createItem = ({ title, description }) => {
@@ -36,18 +37,23 @@ const deleteItem = itemId => {
   });
 };
 
-const getItems = ({searchBy, limit, offset}) => {
+const getItems = ({ searchBy, limit, offset }) => {
   return new Promise(async (resolve, reject) => {
     let itemCount, items;
+    const countQuery = searchBy
+      ? `SELECT COUNT(*) FROM todo.items WHERE title ILIKE '%${searchBy}%'`
+      : "SELECT COUNT(*) FROM todo.items";
     try {
-      const result = await pool.query("SELECT COUNT(*) FROM todo.items");
+      const result = await pool.query(countQuery);
       itemCount = result.rows[0].count;
     } catch (error) {
       reject(error);
     }
 
     const query = searchBy ? QUERY_SEARCH : QUERY_ALL;
-    const params = searchBy ? [`%${searchBy}%`, limit, offset] : [limit, offset];
+    const params = searchBy
+      ? [`%${searchBy}%`, limit, offset]
+      : [limit, offset];
     try {
       const result = await pool.query(query, params);
       items = result.rows;
