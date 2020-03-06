@@ -25,10 +25,37 @@ const port = 8080;
 
 const baseUrl = "/api/v1/todo";
 
+//TODO: create addItems to batch add instead
+app.post(baseUrl + "/items", async (req, res) => {
+  const items = req.body;
+  if (items && items.length > 0) {
+    items.forEach(async item => {
+      if (item.title) {
+        try {
+          await createItem(item);
+        } catch (error) {
+          res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+            errorMessage: `Something went wrong when creating item: ${item.title}`
+          });
+        }
+      } else {
+        res
+          .status(HttpStatus.BAD_REQUEST)
+          .json({ errorMessage: "Wrong usage, title is missing." });
+      }
+    });
+    res.status(HttpStatus.CREATED).send();
+  } else {
+    res
+      .status(HttpStatus.BAD_REQUEST)
+      .json({ errorMessage: "Missing content in body" });
+  }
+});
+
 app.post(baseUrl + "/item", async (req, res) => {
   const item = {
     title: req.body.title,
-    description: req.body.description,
+    description: req.body.description
   };
   if (item.title) {
     try {
@@ -61,9 +88,9 @@ app.put(baseUrl + "/item/:id", async (req, res) => {
       if (updated) {
         res.status(HttpStatus.OK).send();
       } else {
-        res
-          .status(HttpStatus.BAD_REQUEST)
-          .json({ errorMessage: `Could not update item with ${itemId}. Does the item exist?` });
+        res.status(HttpStatus.BAD_REQUEST).json({
+          errorMessage: `Could not update item with ${itemId}. Does the item exist?`
+        });
       }
     } catch (error) {
       console.log(error);
