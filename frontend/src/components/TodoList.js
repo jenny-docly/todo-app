@@ -32,13 +32,15 @@ function TodoList({ items, itemCount, pageSize }) {
             </div>
           ))}
       </Paper>
-      <Pagination
-        style={styles.pagination}
-        count={Math.ceil(itemCount / pageSize)}
-        onChange={(event, value) => {
-          dispatch(updatePageOffset(pageSize * value - pageSize));
-        }}
-      />
+      {items && items.length > 0 && (
+        <Pagination
+          style={styles.pagination}
+          count={Math.ceil(itemCount / pageSize)}
+          onChange={(event, value) => {
+            dispatch(updatePageOffset(pageSize * value - pageSize));
+          }}
+        />
+      )}
     </div>
   );
 }
