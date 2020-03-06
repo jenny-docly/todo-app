@@ -1,5 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+
+import { CircularProgress, Typography } from "@material-ui/core";
 
 import TodoList from "./components/TodoList";
 import MenuBar from "./components/MenuBar";
@@ -10,28 +12,41 @@ import { closeModal } from "./store/ui/actions";
 
 const styles = {
   container: {
+    display: "flex",
+    flexDirection: "column",
     margin: "auto",
     width: "50%",
     marginTop: "100px"
+  },
+  item: {
+    marginTop: "100px",
+    alignSelf: "center"
   }
 };
 
-function App() {
-  const { itemCount, items, stale, paging, searchString } = useSelector(state => state.todo);
+function TodoApp() {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const { itemCount, items, stale, paging, searchString } = useSelector(
+    state => state.todo
+  );
   const { modal } = useSelector(state => state.ui);
   const dispatch = useDispatch();
   useEffect(() => {
     async function fetchItems() {
       try {
+        setLoading(true);
         const response = await getItems(
           searchString,
           paging.pageSize,
           paging.offset
         );
+        setLoading(false);
         dispatch(setItems(response.items));
         dispatch(setItemCount(response.itemCount));
       } catch (error) {
-        console.log(error);
+        setError(true);
+        setLoading(false);
       }
     }
     fetchItems();
@@ -41,11 +56,19 @@ function App() {
   return (
     <div style={styles.container}>
       <MenuBar />
-      <TodoList
-        items={items}
-        itemCount={itemCount}
-        pageSize={paging.pageSize}
-      />
+      {!loading && !error && (
+        <TodoList
+          items={items}
+          itemCount={itemCount}
+          pageSize={paging.pageSize}
+        />
+      )}
+      {loading && <CircularProgress style={styles.item} />}
+      {!loading && error && (
+        <Typography style={styles.item} variant="body1">
+          Oops, could load todos at this point.
+        </Typography>
+      )}
       <Modal
         mode={modal.mode}
         item={modal.item}
@@ -56,4 +79,4 @@ function App() {
   );
 }
 
-export default App;
+export default TodoApp;

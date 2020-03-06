@@ -7,7 +7,7 @@ import { todo } from "./store/todo/reducer.js";
 import { ui } from "./store/ui/reducer.js";
 import { Provider as Redux } from "react-redux";
 
-import App from "./App";
+import TodoApp from "./TodoApp";
 import * as serviceWorker from "./serviceWorker";
 
 const store = createStore(
@@ -16,7 +16,7 @@ const store = createStore(
 );
 const Root = () => (
   <Redux store={store}>
-    <App />
+    <TodoApp />
   </Redux>
 );
 
