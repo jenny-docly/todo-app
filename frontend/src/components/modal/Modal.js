@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 500,
+    width: 400,
     padding: theme.spacing(2, 4, 3),
     backgroundColor: theme.palette.background.paper
   },

@@ -8,14 +8,10 @@ import { Typography } from "@material-ui/core";
 const useStyles = makeStyles(theme => ({
   container: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   item: {
     margin: theme.spacing(2)
-  },
-  button: {
-    margin: theme.spacing(2),
-    width: "100px"
   }
 }));
 
@@ -23,8 +19,12 @@ function ViewTodo(props) {
   const classes = useStyles();
   return (
     <div className={classes.container}>
-      <Typography variant="h5">{props.item.title}</Typography>
-      <Typography variant="h7">{props.item.description}</Typography>
+      <Typography className={classes.item} variant="h5">
+        {props.item.title}
+      </Typography>
+      <Typography className={classes.item} variant="body2">
+        {props.item.description ? props.item.description : "No description"}
+      </Typography>
     </div>
   );
 }
