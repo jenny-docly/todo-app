@@ -1,8 +1,8 @@
 const { pool } = require("../database.js");
 
 const QUERY_SEARCH =
-  "SELECT * FROM todo.items WHERE title ILIKE $1 ORDER BY id LIMIT $2 OFFSET $3";
-const QUERY_ALL = "SELECT * FROM todo.items ORDER BY id LIMIT $1 OFFSET $2";
+  "SELECT * FROM todo.items WHERE title ILIKE $1 ORDER BY id DESC LIMIT $2 OFFSET $3";
+const QUERY_ALL = "SELECT * FROM todo.items ORDER BY id DESC LIMIT $1 OFFSET $2";
 
 const createItem = ({ title, description }) => {
   return new Promise((resolve, reject) => {
